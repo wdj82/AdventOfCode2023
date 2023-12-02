@@ -2,11 +2,7 @@
 // https://adventofcode.com/2023/day/1
 
 import { rawInput } from "./rawInput";
-// import { testInput } from "./rawInput";
 
-const stringNumbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-
-// const lines = testInput.split("\n");
 const lines = rawInput.split("\n");
 
 const partOne = lines
@@ -32,31 +28,87 @@ const partOne = lines
 
 console.log({ partOne });
 
+function findFirstStringNumberIndex(line: string) {
+  for (let i = 0; i < line.length; i++) {
+    const threeChar = line.slice(i, i + 3);
+    if (threeChar === "one") {
+      return { index: i, number: "1" };
+    }
+    if (threeChar === "two") {
+      return { index: i, number: "2" };
+    }
+    if (threeChar === "six") {
+      return { index: i, number: "6" };
+    }
+    const fourChar = line.slice(i, i + 4);
+    if (fourChar === "four") {
+      return { index: i, number: "4" };
+    }
+    if (fourChar === "five") {
+      return { index: i, number: "5" };
+    }
+    if (fourChar === "nine") {
+      return { index: i, number: "9" };
+    }
+    const fiveChar = line.slice(i, i + 5);
+    if (fiveChar === "three") {
+      return { index: i, number: "3" };
+    }
+    if (fiveChar === "seven") {
+      return { index: i, number: "7" };
+    }
+    if (fiveChar === "eight") {
+      return { index: i, number: "8" };
+    }
+  }
+  return null;
+}
+
+function findLastStringNumberIndex(line: string) {
+  for (let i = line.length - 1; i >= 0; i--) {
+    const threeChar = line.slice(i - 2, i + 1);
+    if (threeChar === "one") {
+      return { index: i - 2, number: "1" };
+    }
+    if (threeChar === "two") {
+      return { index: i - 2, number: "2" };
+    }
+    if (threeChar === "six") {
+      return { index: i - 2, number: "6" };
+    }
+    const fourChar = line.slice(i - 3, i + 1);
+    if (fourChar === "four") {
+      return { index: i - 3, number: "4" };
+    }
+    if (fourChar === "five") {
+      return { index: i - 3, number: "5" };
+    }
+    if (fourChar === "nine") {
+      return { index: i - 3, number: "9" };
+    }
+    const fiveChar = line.slice(i - 4, i + 1);
+    if (fiveChar === "three") {
+      return { index: i - 4, number: "3" };
+    }
+    if (fiveChar === "seven") {
+      return { index: i - 4, number: "7" };
+    }
+    if (fiveChar === "eight") {
+      return { index: i - 4, number: "8" };
+    }
+  }
+  return null;
+}
+
 const partTwo = lines
   .map((line) => {
     let number = "";
 
+    const firstStringNumber = findFirstStringNumberIndex(line);
+    const lastStringNumber = findLastStringNumberIndex(line);
+
     let firstNumberIndex = Infinity;
     let lastNumberIndex = -Infinity;
-    let firstStringIndex = Infinity;
-    let lastStringIndex = -Infinity;
-    let firstStringNumber = -1;
-    let lastStringNumber = -1;
-
-    // find first and last string indexes and save what those numbers are
-    stringNumbers.forEach((stringNumber, number) => {
-      const firstIndex = line.indexOf(stringNumber);
-      const lastIndex = line.lastIndexOf(stringNumber);
-      if (firstIndex > -1 && firstIndex < firstStringIndex) {
-        firstStringIndex = firstIndex;
-        firstStringNumber = number + 1;
-      }
-      if (lastIndex > -1 && lastIndex > lastStringIndex) {
-        lastStringIndex = lastIndex;
-        lastStringNumber = number + 1;
-      }
-    });
-
     // find first number index
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
@@ -75,16 +127,16 @@ const partTwo = lines
       }
     }
 
-    if (firstNumberIndex < firstStringIndex) {
-      number += line[firstNumberIndex];
+    if (firstStringNumber && firstStringNumber?.index < firstNumberIndex) {
+      number += firstStringNumber?.number;
     } else {
-      number += firstStringNumber;
+      number += line[firstNumberIndex];
     }
 
-    if (lastNumberIndex > lastStringIndex) {
-      number += line[lastNumberIndex];
+    if (lastStringNumber && lastStringNumber?.index > lastNumberIndex) {
+      number += lastStringNumber?.number;
     } else {
-      number += lastStringNumber;
+      number += line[lastNumberIndex];
     }
 
     return Number(number);
