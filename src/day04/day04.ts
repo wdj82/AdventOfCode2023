@@ -72,11 +72,9 @@ numberOfCards.forEach((count, currentCard) => {
   // Add cards 2, 3, 4, 5 (the next 4 cards because of the 4 wins) for each card #1 (twice)
   // we now have 3 copies of cards 2, 3, 4, 5 (the original cards plus the new ones)
   // then continue with card 2
-  for (let copies = 0; copies < count; copies++) {
-    for (let i = currentCard + 1; i < currentCard + 1 + wins; i++) {
-      const oldCount = numberOfCards.get(i) ?? 0;
-      numberOfCards.set(i, oldCount + 1);
-    }
+  for (let i = currentCard + 1; i < currentCard + 1 + wins; i++) {
+    const oldCount = numberOfCards.get(i) ?? 0;
+    numberOfCards.set(i, oldCount + 1 * count);
   }
 });
 
@@ -85,4 +83,3 @@ console.log({ partTwo });
 
 document.getElementById("partOne")?.appendChild(document.createTextNode(partOne.toString()));
 document.getElementById("partTwo")?.appendChild(document.createTextNode(partTwo.toString()));
-
