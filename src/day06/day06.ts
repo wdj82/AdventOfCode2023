@@ -1,21 +1,7 @@
 // Advent of Code day 6
 // https://adventofcode.com/2023/day/6
 
-const inputPartOne = [
-  [54, 446],
-  [81, 1292],
-  [70, 1035],
-  [88, 1007],
-];
-const inputPartTwo = [54817088, 446129210351007];
-
-// const inputPartOne = [
-//   [7, 9],
-//   [15, 40],
-//   [30, 200],
-// ];
-
-// const inputPartTwo = [71530, 940200];
+import { inputPartOne, inputPartTwo } from "./input";
 
 function findWinningRaces([duration, distance]: number[]) {
   let winningRaces = 0;
