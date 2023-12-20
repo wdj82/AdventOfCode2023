@@ -173,6 +173,6 @@ while (stack.length) {
 
 console.log({ partTwo });
 
-document.getElementById("partOne")?.appendChild(document.createTextNode("partOne"));
-document.getElementById("partTwo")?.appendChild(document.createTextNode("partTwo"));
+document.getElementById("partOne")?.appendChild(document.createTextNode(partOne.toString()));
+document.getElementById("partTwo")?.appendChild(document.createTextNode(partTwo.toString()));
 
