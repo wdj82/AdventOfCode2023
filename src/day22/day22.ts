@@ -16,15 +16,7 @@ type Brick = {
   };
 };
 
-const input = `1,0,1~1,2,1
-0,0,2~2,0,2
-0,2,3~2,2,3
-0,0,4~0,2,4
-2,0,5~2,2,5
-0,1,6~2,1,6
-1,1,8~1,1,9`;
-
-const bricks = input.split("\n").map((line) => {
+const bricks = rawInput.split("\n").map((line) => {
   const [start, end] = line.split("~").map((coords) => coords.split(",").map(Number));
   return { start: { x: start[0], y: start[1], z: start[2] }, end: { x: end[0], y: end[1], z: end[2] } };
 });
