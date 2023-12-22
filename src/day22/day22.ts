@@ -16,7 +16,15 @@ type Brick = {
   };
 };
 
-const bricks = rawInput.split("\n").map((line) => {
+const input = `1,0,1~1,2,1
+0,0,2~2,0,2
+0,2,3~2,2,3
+0,0,4~0,2,4
+2,0,5~2,2,5
+0,1,6~2,1,6
+1,1,8~1,1,9`;
+
+const bricks = input.split("\n").map((line) => {
   const [start, end] = line.split("~").map((coords) => coords.split(",").map(Number));
   return { start: { x: start[0], y: start[1], z: start[2] }, end: { x: end[0], y: end[1], z: end[2] } };
 });
@@ -80,11 +88,11 @@ while (step) {
   });
 }
 
-const above = new Map<Brick, Set<Brick>>();
-const below = new Map<Brick, Set<Brick>>();
+const aboveBricks = new Map<Brick, Set<Brick>>();
+const belowBricks = new Map<Brick, Set<Brick>>();
 bricks.forEach((brick) => {
-  above.set(brick, new Set());
-  below.set(brick, new Set());
+  aboveBricks.set(brick, new Set());
+  belowBricks.set(brick, new Set());
 });
 
 bricks.forEach((brick) => {
@@ -96,8 +104,10 @@ bricks.forEach((brick) => {
           const other = occupation.get(key);
           if (!other) throw new Error("oops");
           if (other != brick) {
-            above.get(brick)?.add(other);
-            below.get(other)?.add(brick);
+            // add this new brick as above the current brick
+            aboveBricks.get(brick)?.add(other);
+            // also add the current brick below the new brick
+            belowBricks.get(other)?.add(brick);
           }
         }
       }
@@ -108,13 +118,15 @@ bricks.forEach((brick) => {
 let partOne = 0;
 bricks.forEach((brick) => {
   let safe = true;
-  above.get(brick)?.forEach((brickAbove) => {
-    if (below.get(brickAbove)?.size == 1) {
+  aboveBricks.get(brick)?.forEach((brickAbove) => {
+    if (belowBricks.get(brickAbove)?.size === 1) {
+      // if the bricks above the current brick are only being supported by this brick it can't be destroyed
       safe = false;
     }
   });
 
   if (safe) {
+    // other bricks support anything above this brick
     partOne++;
   }
 });
@@ -125,13 +137,13 @@ let partTwo = 0;
 bricks.forEach((brick) => {
   const gone = new Set<Brick>();
   gone.add(brick);
-
   let foundNewOne = true;
   while (foundNewOne) {
     foundNewOne = false;
     gone.forEach((goneBrick) => {
-      above.get(goneBrick)?.forEach((aboveBrick) => {
-        const belowBrick = below.get(aboveBrick);
+      // climb up the array of above bricks adding them to the gone list
+      aboveBricks.get(goneBrick)?.forEach((aboveBrick) => {
+        const belowBrick = belowBricks.get(aboveBrick);
         if (!belowBrick) throw new Error("oops");
 
         const isAllBelowGone = [...belowBrick].every((x) => gone.has(x));
