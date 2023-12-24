@@ -1,14 +1,14 @@
 // Advent of Code day 24
 // https://adventofcode.com/2023/day/24
 
-import { rawInput } from "./rawInput";
+import { rawInput } from "./rawInput.js";
 import { init } from "z3-solver";
 
-function isInArea(x: number, y: number, minP: number, maxP: number) {
+function isInArea(x, y, minP, maxP) {
   return x >= minP && x <= maxP && y >= minP && y <= maxP;
 }
 
-export const getIntersections = (input: string, minP: number, maxP: number) => {
+export const getIntersections = (input, minP, maxP) => {
   const hailStones = input.split("\n").map((line) => {
     const [x, y, z] = line.split("@")[0].split(",").map(Number);
     const [vx, vy, vz] = line.split("@")[1].split(",").map(Number);
@@ -45,7 +45,7 @@ export const getIntersections = (input: string, minP: number, maxP: number) => {
 const partOne = getIntersections(rawInput, 200000000000000, 400000000000000);
 console.log({ partOne });
 
-export const getStartingCoordinates = async (input: string) => {
+export const getStartingCoordinates = async (input) => {
   const hailStones = input
     .split("\n")
     .slice(0, 3)
@@ -93,6 +93,6 @@ export const getStartingCoordinates = async (input: string) => {
 const partTwo = await getStartingCoordinates(rawInput);
 console.log({ partTwo });
 
-document.getElementById("partOne")?.appendChild(document.createTextNode("partOne"));
-document.getElementById("partTwo")?.appendChild(document.createTextNode("partTwo"));
+// document.getElementById("partOne")?.appendChild(document.createTextNode("partOne"));
+// document.getElementById("partTwo")?.appendChild(document.createTextNode("partTwo"));
 
